@@ -148,28 +148,18 @@ CREATE TABLE IF NOT EXISTS tblConceptoProveedor (
 CREATE TABLE IF NOT EXISTS tblProveedor(
     idProveedor                                  INT AUTO_INCREMENT,
     nombreProveedor                              VARCHAR(100) NOT NULL,
-    nitProveedor                                 CHAR(10) NOT NULL,
+    direccionProveedor                                 CHAR(10) NOT NULL,
     correoProveedor                              VARCHAR(150) NOT NULL,
     telefonoProveedor                            VARCHAR(30) NOT NULL,
     direccionProveedor                           VARCHAR(500) NOT NULL,
     estadoProveedor                              BOOLEAN NOT NULL DEFAULT 1,
-    idPlazo                                      INT NULL,
-    saldoActualProveedor                         DECIMAL(12,4) NOT NULL DEFAULT 0,
-    saldoAnteriorProveedor                       DECIMAL(12,4) NOT NULL DEFAULT 0,
-    cargosMesProveedor                           DECIMAL(12,4) NOT NULL DEFAULT 0,
-    abonosMesProveedor                           DECIMAL(12,4) NOT NULL DEFAULT 0,
-    cargosAsignadosProveedor                     DECIMAL(12,4) NOT NULL DEFAULT 0,
-    cargosAcumuladosProveedor                    DECIMAL(12,4) NOT NULL DEFAULT 0,
-    abonosAcumuladosProveedor                    DECIMAL(12,4) NOT NULL DEFAULT 0,
     created_at                                   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at                                   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    
     CONSTRAINT Pk_Proveedores PRIMARY KEY(idProveedor),
     CONSTRAINT uqProveedorNit UNIQUE (nitProveedor),
-    CONSTRAINT Fk_Proveedor_Plazo FOREIGN KEY (idPlazo) REFERENCES tblPlazo (idPlazo) ON DELETE RESTRICT ON UPDATE RESTRICT,
-    INDEX idxProveedorPlazo (idPlazo),
-    CONSTRAINT ckMovimientosProveedor CHECK (cargosMesProveedor >= 0 AND abonosMesProveedor >= 0 AND cargosAsignadosProveedor >= 0 AND cargosAcumuladosProveedor >= 0 AND abonosAcumuladosProveedor >= 0)
-) ENGINE=InnoDB;
+  ) ENGINE=InnoDB;
+
+
 
 CREATE TABLE IF NOT EXISTS tblProducto (
 idProducto INT NOT NULL AUTO_INCREMENT,
