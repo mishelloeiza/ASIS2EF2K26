@@ -148,18 +148,28 @@ CREATE TABLE IF NOT EXISTS tblConceptoProveedor (
 CREATE TABLE IF NOT EXISTS tblProveedor(
     idProveedor                                  INT AUTO_INCREMENT,
     nombreProveedor                              VARCHAR(100) NOT NULL,
-    direccionProveedor                                 CHAR(10) NOT NULL,
+    nitProveedor                                 CHAR(10) NOT NULL,
     correoProveedor                              VARCHAR(150) NOT NULL,
     telefonoProveedor                            VARCHAR(30) NOT NULL,
     direccionProveedor                           VARCHAR(500) NOT NULL,
     estadoProveedor                              BOOLEAN NOT NULL DEFAULT 1,
+    idPlazo                                      INT NULL,
+    saldoActualProveedor                         DECIMAL(12,4) NOT NULL DEFAULT 0,
+    saldoAnteriorProveedor                       DECIMAL(12,4) NOT NULL DEFAULT 0,
+    cargosMesProveedor                           DECIMAL(12,4) NOT NULL DEFAULT 0,
+    abonosMesProveedor                           DECIMAL(12,4) NOT NULL DEFAULT 0,
+    cargosAsignadosProveedor                     DECIMAL(12,4) NOT NULL DEFAULT 0,
+    cargosAcumuladosProveedor                    DECIMAL(12,4) NOT NULL DEFAULT 0,
+    abonosAcumuladosProveedor                    DECIMAL(12,4) NOT NULL DEFAULT 0,
     created_at                                   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at                                   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
     CONSTRAINT Pk_Proveedores PRIMARY KEY(idProveedor),
     CONSTRAINT uqProveedorNit UNIQUE (nitProveedor),
-  ) ENGINE=InnoDB;
-
-.
+    CONSTRAINT Fk_Proveedor_Plazo FOREIGN KEY (idPlazo) REFERENCES tblPlazo (idPlazo) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    INDEX idxProveedorPlazo (idPlazo),
+    CONSTRAINT ckMovimientosProveedor CHECK (cargosMesProveedor >= 0 AND abonosMesProveedor >= 0 AND cargosAsignadosProveedor >= 0 AND cargosAcumuladosProveedor >= 0 AND abonosAcumuladosProveedor >= 0)
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS tblProducto (
 idProducto INT NOT NULL AUTO_INCREMENT,
@@ -473,3 +483,16 @@ INSERT INTO tblConceptoProveedor (nombreConceptoProveedor, naturalezaConceptoPro
 INSERT INTO tblConceptoProveedor (nombreConceptoProveedor, naturalezaConceptoProveedor) SELECT 'Pago a proveedor', 'Abono' WHERE NOT EXISTS (SELECT 1 FROM tblConceptoProveedor WHERE nombreConceptoProveedor = 'Pago a proveedor');
 INSERT INTO tblConceptoProveedor (nombreConceptoProveedor, naturalezaConceptoProveedor) SELECT 'Nota de credito', 'Abono' WHERE NOT EXISTS (SELECT 1 FROM tblConceptoProveedor WHERE nombreConceptoProveedor = 'Nota de credito');
 INSERT INTO tblConceptoProveedor (nombreConceptoProveedor, naturalezaConceptoProveedor) SELECT 'Factura de transporte', 'Cargo' WHERE NOT EXISTS (SELECT 1 FROM tblConceptoProveedor WHERE nombreConceptoProveedor = 'Factura de transporte');
+
+-- Objetivo: Catalogo de proveedores del examen final 
+-- Fecha: 24/11/2026
+CREATE TABLE IF NOT EXISTS tblProveedorCatalogo (
+    idProveedorCatalogo        INT          NOT NULL AUTO_INCREMENT,
+    nombreProveedorCatalogo    VARCHAR(50)  NOT NULL,
+    direccionProveedorCatalogo VARCHAR(30)  NOT NULL,
+    telefonoProveedorCatalogo  VARCHAR(20)  NOT NULL,
+    estadoProveedorCatalogo    BOOLEAN      NOT NULL DEFAULT 1,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT Pk_ProveedorCatalogo PRIMARY KEY (idProveedorCatalogo)
+) ENGINE=InnoDB;
