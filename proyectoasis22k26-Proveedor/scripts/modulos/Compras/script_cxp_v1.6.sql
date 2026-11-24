@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS tblProveedor(
     CONSTRAINT uqProveedorNit UNIQUE (nitProveedor),
   ) ENGINE=InnoDB;
 
-
+.
 
 CREATE TABLE IF NOT EXISTS tblProducto (
 idProducto INT NOT NULL AUTO_INCREMENT,
